@@ -127,29 +127,42 @@ export default function CompanyMap({
       const color =
         risk === 'high' ? '#EF4444' : risk === 'medium' ? '#F59E0B' : '#10B981';
 
-      // Create custom marker element
+      // Create custom marker element with wrapper to prevent position shift
       const el = document.createElement('div');
-      el.className = 'custom-marker';
+      el.className = 'custom-marker-wrapper';
       el.style.cssText = `
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      `;
+
+      const innerEl = document.createElement('div');
+      innerEl.className = 'custom-marker-inner';
+      innerEl.style.cssText = `
         width: 32px;
         height: 32px;
         background-color: ${color};
         border: 3px solid white;
         border-radius: 50%;
-        cursor: pointer;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         transition: transform 0.2s, box-shadow 0.2s;
+        transform-origin: center center;
       `;
 
+      el.appendChild(innerEl);
+
       el.addEventListener('mouseenter', () => {
-        el.style.transform = 'scale(1.2)';
-        el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+        innerEl.style.transform = 'scale(1.2)';
+        innerEl.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
         onMarkerHover?.(company.id);
       });
 
       el.addEventListener('mouseleave', () => {
-        el.style.transform = 'scale(1)';
-        el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+        innerEl.style.transform = 'scale(1)';
+        innerEl.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
         onMarkerHover?.(null);
       });
 
@@ -179,7 +192,10 @@ export default function CompanyMap({
         </div>
       `);
 
-      const marker = new mapboxgl.Marker(el)
+      const marker = new mapboxgl.Marker({
+        element: el,
+        anchor: 'center', // Center anchor for circular markers
+      })
         .setLngLat([company.longitude, company.latitude])
         .setPopup(popup)
         .addTo(map.current!);
@@ -196,12 +212,19 @@ export default function CompanyMap({
   useEffect(() => {
     markersRef.current.forEach((marker, id) => {
       const el = marker.getElement();
+      const innerEl = el.querySelector('.custom-marker-inner') as HTMLElement;
       if (id === hoveredCompanyId) {
-        el.style.transform = 'scale(1.3)';
+        if (innerEl) {
+          innerEl.style.transform = 'scale(1.3)';
+          innerEl.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+        }
         el.style.zIndex = '100';
         marker.togglePopup();
       } else {
-        el.style.transform = 'scale(1)';
+        if (innerEl) {
+          innerEl.style.transform = 'scale(1)';
+          innerEl.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+        }
         el.style.zIndex = '1';
         if (marker.getPopup()?.isOpen()) {
           marker.togglePopup();
@@ -217,8 +240,26 @@ export default function CompanyMap({
         <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-lg">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2" />
-            <p className="text-sm text-gray-600">Loading map...</p>
+            <p className="text-sm text-gray-600">Geocoding addresses...</p>
           </div>
+        </div>
+      )}
+      {!isLoading && companiesWithCoords.length === 0 && companies.length > 0 && (
+        <div className="absolute inset-0 bg-white/90 flex items-center justify-center rounded-lg">
+          <div className="text-center max-w-sm px-4">
+            <div className="text-4xl mb-3">📍</div>
+            <p className="text-sm font-medium text-gray-700 mb-1">No Address Data Available</p>
+            <p className="text-xs text-gray-500">
+              Companies need address_street, address_zip, and address_city populated in the database for geocoding.
+            </p>
+          </div>
+        </div>
+      )}
+      {companiesWithCoords.length < companies.length && companiesWithCoords.length > 0 && !isLoading && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 shadow-sm">
+          <p className="text-xs text-amber-800">
+            Showing {companiesWithCoords.length} of {companies.length} companies (missing address data)
+          </p>
         </div>
       )}
       {/* Legend */}
