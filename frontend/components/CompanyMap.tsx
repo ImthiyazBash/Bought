@@ -101,7 +101,7 @@ export default function CompanyMap({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v11',
       center: [9.9937, 53.5511], // Hamburg center
-      zoom: 11,
+      zoom: 9.5,
     });
 
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
