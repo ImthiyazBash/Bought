@@ -60,7 +60,7 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
           </div>
 
           {/* Industry Classification */}
-          {(company.wz_code || company.wz_code_description) && (
+          {(company.wz_code || company.wz_description) && (
             <div className="mb-4 pb-3 border-b border-gray-100">
               <div className="flex items-start gap-2">
                 {company.wz_code && (
@@ -68,9 +68,9 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
                     WZ {company.wz_code}
                   </span>
                 )}
-                {company.wz_code_description && (
+                {company.wz_description && (
                   <p className="text-xs text-gray-600 line-clamp-2 flex-1">
-                    {company.wz_code_description}
+                    {company.wz_description}
                   </p>
                 )}
               </div>
@@ -101,7 +101,7 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
           {/* Footer */}
           <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
             <span className="text-xs text-gray-400">
-              Data from {company.year || 'N/A'}
+              Data from {company.report_year || 'N/A'}
             </span>
             <span className="text-primary text-sm font-medium group-hover:underline">
               View Details →

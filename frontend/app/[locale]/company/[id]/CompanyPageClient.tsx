@@ -139,7 +139,7 @@ export default function CompanyPageClient({
           <MetricCard
             label="Equity"
             value={formatCurrency(company.equity_eur)}
-            subtext={`Year ${company.year || 'N/A'}`}
+            subtext={`Year ${company.report_year || 'N/A'}`}
             className="shadow-lg"
           />
           <MetricCard
@@ -176,8 +176,8 @@ export default function CompanyPageClient({
                 Company Details
               </h3>
               <dl className="space-y-4">
-                <DetailItem label="Data Year" value={company.year?.toString() || 'N/A'} />
-                {(company.wz_code || company.wz_code_description) && (
+                <DetailItem label="Data Year" value={company.report_year?.toString() || 'N/A'} />
+                {(company.wz_code || company.wz_description) && (
                   <div className="py-3 border-b border-gray-100">
                     <dt className="text-sm text-gray-500 mb-2">Corporate Purpose</dt>
                     <dd className="text-sm text-gray-900">
@@ -188,9 +188,9 @@ export default function CompanyPageClient({
                           </span>
                         </div>
                       )}
-                      {company.wz_code_description && (
+                      {company.wz_description && (
                         <p className="text-sm text-gray-700 leading-relaxed">
-                          {company.wz_code_description}
+                          {company.wz_description}
                         </p>
                       )}
                     </dd>

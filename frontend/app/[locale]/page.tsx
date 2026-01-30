@@ -80,7 +80,7 @@ export default function Home() {
 
     // Industry classification
     if (company.wz_code) score += 2;
-    if (company.wz_code_description) score += 1;
+    if (company.wz_description) score += 1;
 
     // Shareholder data
     if (company.shareholder_details && company.shareholder_details.length > 0) score += 3;
@@ -89,8 +89,8 @@ export default function Home() {
     if (company.last_ownership_change_year) score += 2;
 
     // Data recency
-    if (company.year && company.year >= 2020) score += 2;
-    else if (company.year && company.year >= 2015) score += 1;
+    if (company.report_year && company.report_year >= 2020) score += 2;
+    else if (company.report_year && company.report_year >= 2015) score += 1;
 
     return score;
   };

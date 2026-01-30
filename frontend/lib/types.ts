@@ -2,7 +2,7 @@ export interface HamburgTarget {
   id: number;
   created_at: string;
   company_name: string | null;
-  year: number | null;
+  report_year: number | null;
   equity_eur: number | null;
   total_assets_eur: number | null;
   net_income_eur: number | null;
@@ -20,7 +20,7 @@ export interface HamburgTarget {
   address_city: string | null;
   address_country: string | null;
   wz_code: string | null;
-  wz_code_description: string | null;
+  wz_description: string | null;
 }
 
 export interface ShareholderDetail {
