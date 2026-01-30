@@ -178,16 +178,20 @@ export default function CompanyPageClient({
               <dl className="space-y-4">
                 <DetailItem label="Data Year" value={company.year?.toString() || 'N/A'} />
                 {(company.wz_code || company.wz_code_description) && (
-                  <div className="py-2 border-b border-gray-100">
-                    <dt className="text-sm text-gray-500 mb-1">Corporate Purpose</dt>
-                    <dd className="text-sm font-medium text-gray-900">
+                  <div className="py-3 border-b border-gray-100">
+                    <dt className="text-sm text-gray-500 mb-2">Corporate Purpose</dt>
+                    <dd className="text-sm text-gray-900">
                       {company.wz_code && (
-                        <span className="inline-block bg-gray-100 px-2 py-1 rounded text-xs font-mono mr-2">
-                          WZ {company.wz_code}
-                        </span>
+                        <div className="mb-2">
+                          <span className="inline-block bg-gray-100 px-2 py-1 rounded text-xs font-mono text-gray-700">
+                            WZ {company.wz_code}
+                          </span>
+                        </div>
                       )}
                       {company.wz_code_description && (
-                        <span className="block mt-1">{company.wz_code_description}</span>
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          {company.wz_code_description}
+                        </p>
                       )}
                     </dd>
                   </div>
