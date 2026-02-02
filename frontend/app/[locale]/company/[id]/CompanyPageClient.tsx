@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { HamburgTarget } from '@/lib/types';
 import { formatCurrency, formatNumber, getFullAddress, getCompanyNachfolgeScore, getScoreVariant } from '@/lib/utils';
+import { useTranslations } from '@/lib/i18n-context';
 import MetricCard from '@/components/ui/MetricCard';
 import Badge from '@/components/ui/Badge';
 import FinancialCharts from '@/components/FinancialCharts';
@@ -16,6 +17,7 @@ export default function CompanyPageClient({
   params: Promise<{ id: string; locale: string }>;
 }) {
   const { id, locale } = use(params);
+  const t = useTranslations();
   const [company, setCompany] = useState<HamburgTarget | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +52,7 @@ export default function CompanyPageClient({
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
-          <p className="text-gray-600">Loading company details...</p>
+          <p className="text-gray-600">{t('company.detail.loadingDetails')}</p>
         </div>
       </div>
     );
@@ -62,14 +64,14 @@ export default function CompanyPageClient({
         <div className="text-center max-w-md">
           <div className="text-red-500 text-5xl mb-4">⚠️</div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            Company Not Found
+            {t('company.detail.notFound')}
           </h2>
-          <p className="text-gray-600 mb-4">{error || 'This company does not exist.'}</p>
+          <p className="text-gray-600 mb-4">{error || t('company.detail.notFoundDescription')}</p>
           <Link
             href={`/${locale}`}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors inline-block"
           >
-            Back to Home
+            {t('company.detail.backToHome')}
           </Link>
         </div>
       </div>
@@ -96,7 +98,7 @@ export default function CompanyPageClient({
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to listings
+              {t('company.detail.backToListings')}
             </Link>
           </div>
 
@@ -105,7 +107,7 @@ export default function CompanyPageClient({
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">
-                  {company.company_name || 'Unnamed Company'}
+                  {company.company_name || t('company.detail.unnamedCompany')}
                 </h1>
                 <div className="flex items-center gap-2 text-gray-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,11 +121,11 @@ export default function CompanyPageClient({
               {/* Status Badges */}
               <div className="flex flex-wrap gap-2">
                 <Badge variant={scoreVariant}>
-                  Nachfolge-Score: {nachfolgeScore}/10
+                  {t('score.label')}: {nachfolgeScore}/10
                 </Badge>
                 {yearsSinceChange && yearsSinceChange > 10 && (
                   <Badge variant="neutral">
-                    {yearsSinceChange} years since ownership change
+                    {t('company.detail.yearsSinceChange').replace('{years}', yearsSinceChange.toString())}
                   </Badge>
                 )}
               </div>
@@ -137,25 +139,25 @@ export default function CompanyPageClient({
         {/* Key Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 -mt-12">
           <MetricCard
-            label="Equity"
+            label={t('company.card.equity')}
             value={formatCurrency(company.equity_eur)}
-            subtext={`Year ${company.report_year || 'N/A'}`}
+            subtext={`${t('company.detail.dataYear')} ${company.report_year || t('common.na')}`}
             className="shadow-lg"
           />
           <MetricCard
-            label="Total Assets"
+            label={t('company.card.totalAssets')}
             value={formatCurrency(company.total_assets_eur)}
             className="shadow-lg"
           />
           <MetricCard
-            label="Net Income"
+            label={t('company.card.netIncome')}
             value={formatCurrency(company.net_income_eur)}
             trend={company.net_income_eur ? (company.net_income_eur > 0 ? 'positive' : 'negative') : undefined}
             className="shadow-lg"
           />
           <MetricCard
-            label="Employees"
-            value={company.employee_count ? formatNumber(company.employee_count) : 'N/A'}
+            label={t('company.card.employees')}
+            value={company.employee_count ? formatNumber(company.employee_count) : t('common.na')}
             className="shadow-lg"
           />
         </div>
@@ -173,13 +175,13 @@ export default function CompanyPageClient({
             {/* Company Details */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Company Details
+                {t('company.detail.companyDetails')}
               </h3>
               <dl className="space-y-4">
-                <DetailItem label="Data Year" value={company.report_year?.toString() || 'N/A'} />
+                <DetailItem label={t('company.detail.dataYear')} value={company.report_year?.toString() || t('common.na')} />
                 {(company.wz_code || company.wz_description) && (
                   <div className="py-3 border-b border-gray-100">
-                    <dt className="text-sm text-gray-500 mb-2">Corporate Purpose</dt>
+                    <dt className="text-sm text-gray-500 mb-2">{t('company.detail.corporatePurpose')}</dt>
                     <dd className="text-sm text-gray-900">
                       {company.wz_code && (
                         <div className="mb-2">
@@ -197,24 +199,24 @@ export default function CompanyPageClient({
                   </div>
                 )}
                 <DetailItem
-                  label="Last Ownership Change"
+                  label={t('company.detail.lastOwnershipChange')}
                   value={
                     company.last_ownership_change_year
-                      ? `${company.last_ownership_change_year} (${yearsSinceChange} years ago)`
-                      : 'N/A'
+                      ? `${company.last_ownership_change_year} (${t('company.detail.yearsAgo').replace('{years}', yearsSinceChange?.toString() || '')})`
+                      : t('common.na')
                   }
                 />
-                <DetailItem label="Receivables" value={formatCurrency(company.receivables_eur)} />
-                <DetailItem label="Cash Assets" value={formatCurrency(company.cash_assets_eur)} />
-                <DetailItem label="Liabilities" value={formatCurrency(company.liabilities_eur)} />
-                <DetailItem label="Retained Earnings" value={formatCurrency(company.retained_earnings_eur)} />
+                <DetailItem label={t('company.detail.receivables')} value={formatCurrency(company.receivables_eur)} />
+                <DetailItem label={t('company.detail.cashAssets')} value={formatCurrency(company.cash_assets_eur)} />
+                <DetailItem label={t('company.detail.liabilities')} value={formatCurrency(company.liabilities_eur)} />
+                <DetailItem label={t('company.detail.retainedEarnings')} value={formatCurrency(company.retained_earnings_eur)} />
               </dl>
             </div>
 
             {/* Address Card */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Location
+                {t('company.detail.location')}
               </h3>
               <div className="space-y-2 text-sm">
                 {company.address_street && (
@@ -236,20 +238,20 @@ export default function CompanyPageClient({
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
-                View on Google Maps
+                {t('company.detail.viewOnGoogleMaps')}
               </a>
             </div>
 
             {/* Contact CTA */}
             <div className="bg-gradient-to-br from-primary to-primary-hover rounded-xl p-6 text-white">
               <h3 className="text-lg font-semibold mb-2">
-                Interested in this opportunity?
+                {t('company.detail.interested')}
               </h3>
               <p className="text-sm text-white/80 mb-4">
-                Contact us to learn more about this succession opportunity.
+                {t('company.detail.interestedDescription')}
               </p>
               <button className="w-full bg-white text-primary font-medium py-2.5 rounded-lg hover:bg-gray-100 transition-colors">
-                Request Information
+                {t('company.detail.requestInfo')}
               </button>
             </div>
           </div>

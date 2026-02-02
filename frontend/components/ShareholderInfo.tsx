@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { HamburgTarget, ParsedShareholder } from '@/lib/types';
 import { parseShareholders, getScoreVariant } from '@/lib/utils';
+import { useTranslations } from '@/lib/i18n-context';
 import Badge from './ui/Badge';
 
 interface ShareholderInfoProps {
@@ -19,16 +20,17 @@ interface ShareholderInfoProps {
 const COLORS = ['#FF385C', '#00A699', '#484848', '#767676', '#FFAA00', '#7B68EE', '#20B2AA'];
 
 export default function ShareholderInfo({ company }: ShareholderInfoProps) {
+  const t = useTranslations();
   const shareholders = parseShareholders(company);
 
   if (shareholders.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Shareholders
+          {t('shareholders.title')}
         </h3>
         <p className="text-gray-500 text-sm">
-          No shareholder information available.
+          {t('shareholders.noData')}
         </p>
       </div>
     );
@@ -93,17 +95,17 @@ export default function ShareholderInfo({ company }: ShareholderInfoProps) {
     <div className="bg-white rounded-xl border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
-          Shareholders
+          {t('shareholders.title')}
         </h3>
         <div className="flex gap-2">
           {highRiskCount > 0 && (
             <Badge variant="high">
-              {highRiskCount} Score 10
+              {t('score.highCount').replace('{count}', highRiskCount.toString())}
             </Badge>
           )}
           {mediumRiskCount > 0 && (
             <Badge variant="medium">
-              {mediumRiskCount} Score 7-9
+              {t('score.mediumCount').replace('{count}', mediumRiskCount.toString())}
             </Badge>
           )}
         </div>
@@ -116,12 +118,12 @@ export default function ShareholderInfo({ company }: ShareholderInfoProps) {
             <span className="text-2xl">🎯</span>
             <div>
               <p className="font-medium text-red-800">
-                High Succession Opportunity
+                {t('shareholders.highOpportunity')}
               </p>
               <p className="text-sm text-red-700 mt-1">
                 {highRiskCount === 1
-                  ? 'One shareholder is 65+ years old, indicating potential succession planning needs.'
-                  : `${highRiskCount} shareholders are 65+ years old, indicating strong succession planning needs.`}
+                  ? t('shareholders.highOpportunityDescriptionSingle')
+                  : t('shareholders.highOpportunityDescriptionMultiple').replace('{count}', highRiskCount.toString())}
               </p>
             </div>
           </div>
@@ -175,26 +177,26 @@ export default function ShareholderInfo({ company }: ShareholderInfoProps) {
 
       {/* Shareholder Table */}
       <div className="overflow-hidden">
-        <h4 className="text-sm font-medium text-gray-700 mb-3">Shareholder Details</h4>
+        <h4 className="text-sm font-medium text-gray-700 mb-3">{t('shareholders.shareholderDetails')}</h4>
         <table className="min-w-full">
           <thead>
             <tr className="border-b border-gray-200">
               <th className="text-left py-3 px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
+                {t('shareholders.name')}
               </th>
               {hasOwnershipData && (
                 <th className="text-center py-3 px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ownership
+                  {t('shareholders.ownership')}
                 </th>
               )}
               <th className="text-left py-3 px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Date of Birth
+                {t('shareholders.dateOfBirth')}
               </th>
               <th className="text-center py-3 px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Age
+                {t('shareholders.age')}
               </th>
               <th className="text-center py-3 px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nachfolge-Score
+                {t('score.label')}
               </th>
             </tr>
           </thead>
@@ -205,6 +207,7 @@ export default function ShareholderInfo({ company }: ShareholderInfoProps) {
                 shareholder={shareholder}
                 color={COLORS[index % COLORS.length]}
                 showOwnership={hasOwnershipData}
+                t={t}
               />
             ))}
           </tbody>
@@ -214,20 +217,20 @@ export default function ShareholderInfo({ company }: ShareholderInfoProps) {
       {/* Score Explanation */}
       <div className="mt-6 pt-4 border-t border-gray-100">
         <p className="text-xs text-gray-500 font-medium mb-2">
-          Nachfolge-Score Indicators
+          {t('score.indicators')}
         </p>
         <div className="grid grid-cols-3 gap-4 text-xs">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500" />
-            <span className="text-gray-600">Score 10 (Age 65+)</span>
+            <span className="text-gray-600">{t('score.high')}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-amber-500" />
-            <span className="text-gray-600">Score 7-9 (Age 55-64)</span>
+            <span className="text-gray-600">{t('score.medium')}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-gray-600">Score 1-6 (Age &lt;55)</span>
+            <span className="text-gray-600">{t('score.low')}</span>
           </div>
         </div>
       </div>
@@ -239,10 +242,12 @@ function ShareholderRow({
   shareholder,
   color,
   showOwnership,
+  t,
 }: {
   shareholder: ParsedShareholder;
   color: string;
   showOwnership: boolean;
+  t: (key: string) => string;
 }) {
   return (
     <tr className="hover:bg-gray-50 transition-colors">
@@ -260,12 +265,12 @@ function ShareholderRow({
       {showOwnership && (
         <td className="py-4 px-4 text-center">
           <span className="font-semibold text-gray-900">
-            {shareholder.percentage !== null ? `${shareholder.percentage}%` : 'N/A'}
+            {shareholder.percentage !== null ? `${shareholder.percentage}%` : t('common.na')}
           </span>
         </td>
       )}
       <td className="py-4 px-4 text-gray-600">
-        {shareholder.dob || 'Unknown'}
+        {shareholder.dob || t('shareholders.unknown')}
       </td>
       <td className="py-4 px-4 text-center">
         <span
@@ -277,7 +282,7 @@ function ShareholderRow({
               : 'text-gray-900'
           }`}
         >
-          {shareholder.age !== null ? `${shareholder.age} years` : 'Unknown'}
+          {shareholder.age !== null ? `${shareholder.age} ${t('common.years')}` : t('shareholders.unknown')}
         </span>
       </td>
       <td className="py-4 px-4 text-center">

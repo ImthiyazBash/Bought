@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HamburgTarget } from '@/lib/types';
 import { formatCurrency, getShortAddress, getCompanyNachfolgeScore, getScoreVariant, formatNumber } from '@/lib/utils';
+import { useTranslations } from '@/lib/i18n-context';
 import Badge from './ui/Badge';
 
 interface CompanyCardProps {
@@ -13,6 +14,7 @@ interface CompanyCardProps {
 }
 
 export default function CompanyCard({ company, isHovered, onHover }: CompanyCardProps) {
+  const t = useTranslations();
   const pathname = usePathname();
   const locale = pathname.split('/')[1] || 'en';
   const score = getCompanyNachfolgeScore(company);
@@ -37,7 +39,7 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
           <div className="absolute bottom-3 left-4 right-4">
             <h3 className="text-white font-semibold text-lg truncate">
-              {company.company_name || 'Unnamed Company'}
+              {company.company_name || t('company.detail.unnamedCompany')}
             </h3>
             <p className="text-gray-300 text-sm truncate">
               {getShortAddress(company)}
@@ -50,11 +52,11 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
           {/* Badges */}
           <div className="flex flex-wrap gap-2 mb-3">
             <Badge variant={scoreVariant}>
-              Nachfolge-Score: {score}/10
+              {t('score.label')}: {score}/10
             </Badge>
             {yearsSinceChange && yearsSinceChange > 10 && (
               <Badge variant="neutral">
-                {yearsSinceChange}y since change
+                {t('company.detail.yearsSinceChange').replace('{years}', yearsSinceChange.toString())}
               </Badge>
             )}
           </div>
@@ -80,31 +82,31 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
           {/* Metrics Grid */}
           <div className="grid grid-cols-2 gap-3">
             <MetricItem
-              label="Equity"
+              label={t('company.card.equity')}
               value={formatCurrency(company.equity_eur)}
             />
             <MetricItem
-              label="Net Income"
+              label={t('company.card.netIncome')}
               value={formatCurrency(company.net_income_eur)}
               isPositive={company.net_income_eur ? company.net_income_eur > 0 : undefined}
             />
             <MetricItem
-              label="Total Assets"
+              label={t('company.card.totalAssets')}
               value={formatCurrency(company.total_assets_eur)}
             />
             <MetricItem
-              label="Employees"
-              value={company.employee_count ? formatNumber(company.employee_count) : 'N/A'}
+              label={t('company.card.employees')}
+              value={company.employee_count ? formatNumber(company.employee_count) : t('common.na')}
             />
           </div>
 
           {/* Footer */}
           <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
             <span className="text-xs text-gray-400">
-              Data from {company.report_year || 'N/A'}
+              {t('company.card.dataFrom').replace('{year}', company.report_year?.toString() || t('common.na'))}
             </span>
             <span className="text-primary text-sm font-medium group-hover:underline">
-              View Details →
+              {t('company.card.viewDetails')} →
             </span>
           </div>
         </div>

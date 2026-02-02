@@ -95,6 +95,10 @@
     "equity": "Equity",
     "totalAssets": "Total Assets",
     "netIncome": "Net Income",
-    "amount": "Amount (EUR)"
+    "amount": "Amount (EUR)",
+    "balanceSheetStructure": "Balance Sheet Structure",
+    "liabilities": "Liabilities",
+    "assetBreakdown": "Asset Breakdown",
+    "profitabilityMetrics": "Profitability Metrics"
   }
 }

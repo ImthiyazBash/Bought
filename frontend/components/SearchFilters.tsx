@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FilterState } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
+import { useTranslations } from '@/lib/i18n-context';
 
 interface SearchFiltersProps {
   filters: FilterState;
@@ -17,6 +18,7 @@ export default function SearchFilters({
   totalCount,
   filteredCount,
 }: SearchFiltersProps) {
+  const t = useTranslations();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChange = (key: keyof FilterState, value: string | number | boolean | null) => {
@@ -58,7 +60,7 @@ export default function SearchFilters({
           <div className="relative flex-1 min-w-[200px] max-w-md">
             <input
               type="text"
-              placeholder="Search companies..."
+              placeholder={t('search.placeholder')}
               value={filters.searchQuery}
               onChange={(e) => handleChange('searchQuery', e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -88,7 +90,7 @@ export default function SearchFilters({
                   : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
               }`}
             >
-              All Cities
+              {t('search.allCities')}
             </button>
             <button
               onClick={() => handleChange('selectedCity', 'Hamburg')}
@@ -129,7 +131,7 @@ export default function SearchFilters({
                 d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
               />
             </svg>
-            Filters
+            {t('search.filters')}
             {hasActiveFilters && (
               <span className="bg-white text-gray-900 text-xs px-1.5 py-0.5 rounded-full">
                 {[
@@ -147,8 +149,8 @@ export default function SearchFilters({
           {/* Results Count */}
           <span className="text-sm text-gray-500 ml-auto">
             {filteredCount === totalCount
-              ? `${totalCount} companies`
-              : `${filteredCount} of ${totalCount} companies`}
+              ? t('search.resultsCount').replace('{count}', totalCount.toString())
+              : t('search.resultsCountFiltered').replace('{filtered}', filteredCount.toString()).replace('{total}', totalCount.toString())}
           </span>
         </div>
 
@@ -158,7 +160,7 @@ export default function SearchFilters({
             {/* Nachfolge-Score Filter */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Minimum Nachfolge-Score: {filters.minNachfolgeScore}/10
+                {t('filters.minScore')}: {filters.minNachfolgeScore}/10
               </label>
               <div className="flex items-center gap-4">
                 <span className="text-xs text-gray-500">1</span>
@@ -173,7 +175,7 @@ export default function SearchFilters({
                 <span className="text-xs text-gray-500">10</span>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Higher scores indicate greater succession opportunity (10 = age 65+, 7-9 = age 55-64, 1-6 = age &lt;55)
+                {t('filters.scoreDescription')}
               </p>
             </div>
 
@@ -181,7 +183,7 @@ export default function SearchFilters({
               {/* Employees Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Employees: {filters.minEmployees} - {filters.maxEmployees}+
+                  {t('filters.employees')}: {filters.minEmployees} - {filters.maxEmployees}+
                 </label>
                 <div className="flex gap-3">
                   <input
@@ -206,7 +208,7 @@ export default function SearchFilters({
               {/* Equity Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Equity: {formatCurrency(filters.minEquity)} - {formatCurrency(filters.maxEquity)}
+                  {t('filters.equity')}: {formatCurrency(filters.minEquity)} - {formatCurrency(filters.maxEquity)}
                 </label>
                 <div className="flex gap-3">
                   <input
@@ -233,7 +235,7 @@ export default function SearchFilters({
               {/* Net Income Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Net Income: {formatCurrency(filters.minIncome)} - {formatCurrency(filters.maxIncome)}
+                  {t('filters.income')}: {formatCurrency(filters.minIncome)} - {formatCurrency(filters.maxIncome)}
                 </label>
                 <div className="flex gap-3">
                   <input
@@ -264,7 +266,7 @@ export default function SearchFilters({
                 onClick={clearFilters}
                 className="mt-4 text-sm text-primary hover:underline"
               >
-                Clear all filters
+                {t('search.clearAll')}
               </button>
             )}
           </div>

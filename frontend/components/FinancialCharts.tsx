@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 import { HamburgTarget } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
+import { useTranslations } from '@/lib/i18n-context';
 
 interface FinancialChartsProps {
   company: HamburgTarget;
@@ -23,6 +24,7 @@ interface FinancialChartsProps {
 const COLORS = ['#FF385C', '#00A699', '#484848', '#767676', '#FFAA00'];
 
 export default function FinancialCharts({ company }: FinancialChartsProps) {
+  const t = useTranslations();
   // Balance Sheet Data
   const balanceSheetData = [
     {
@@ -112,10 +114,10 @@ export default function FinancialCharts({ company }: FinancialChartsProps) {
       {/* Balance Sheet Overview */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Balance Sheet Structure
+          {t('charts.balanceSheetStructure')}
         </h3>
         <p className="text-sm text-gray-500 mb-4">
-          Total Assets: {formatCurrency(company.total_assets_eur)}
+          {t('charts.totalAssets')}: {formatCurrency(company.total_assets_eur)}
         </p>
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
@@ -141,11 +143,11 @@ export default function FinancialCharts({ company }: FinancialChartsProps) {
         <div className="mt-4 flex justify-center gap-6 text-sm">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-emerald-500" />
-            <span>Equity: {formatCurrency(company.equity_eur)}</span>
+            <span>{t('charts.equity')}: {formatCurrency(company.equity_eur)}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-red-500" />
-            <span>Liabilities: {formatCurrency(company.liabilities_eur)}</span>
+            <span>{t('charts.liabilities')}: {formatCurrency(company.liabilities_eur)}</span>
           </div>
         </div>
       </div>
@@ -154,7 +156,7 @@ export default function FinancialCharts({ company }: FinancialChartsProps) {
       {assetBreakdownData.length > 0 && (
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Asset Breakdown
+            {t('charts.assetBreakdown')}
           </h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -189,7 +191,7 @@ export default function FinancialCharts({ company }: FinancialChartsProps) {
       {/* Profitability */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Profitability Metrics
+          {t('charts.profitabilityMetrics')}
         </h3>
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">

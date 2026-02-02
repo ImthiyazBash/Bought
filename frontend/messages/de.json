@@ -7,25 +7,25 @@
     "years": "Jahre",
     "loading": "Laden",
     "error": "Fehler",
-    "na": "N/V"
+    "na": "k.A."
   },
   "search": {
     "placeholder": "Unternehmen suchen...",
     "filters": "Filter",
-    "clearAll": "Alle Filter löschen",
+    "clearAll": "Filter zurücksetzen",
     "allCities": "Alle Städte",
     "noResults": "Keine Unternehmen gefunden",
-    "noResultsDescription": "Passen Sie Ihre Filter an, um mehr Ergebnisse zu sehen.",
+    "noResultsDescription": "Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen.",
     "resultsCount": "{count} Unternehmen",
     "resultsCountFiltered": "{filtered} von {total} Unternehmen"
   },
   "filters": {
-    "employees": "Mitarbeiter",
+    "employees": "Arbeitnehmer",
     "equity": "Eigenkapital",
-    "income": "Nettoeinkommen",
+    "income": "Jahresüberschuss",
     "city": "Stadt",
     "minScore": "Mindest-Nachfolge-Score",
-    "scoreDescription": "Höhere Werte bedeuten größere Nachfolgechancen (10 = Alter 65+, 7-9 = Alter 55-64, 1-6 = Alter <55)"
+    "scoreDescription": "Höhere Werte deuten auf einen höheren Nachfolgebedarf hin (10 = Alter 65+, 7-9 = Alter 55-64, 1-6 = Alter <55)"
   },
   "score": {
     "label": "Nachfolge-Score",
@@ -40,9 +40,9 @@
   "company": {
     "card": {
       "equity": "Eigenkapital",
-      "totalAssets": "Gesamtvermögen",
-      "netIncome": "Nettoeinkommen",
-      "employees": "Mitarbeiter",
+      "totalAssets": "Bilanzsumme",
+      "netIncome": "Jahresüberschuss",
+      "employees": "Arbeitnehmer",
       "dataFrom": "Daten von {year}",
       "viewDetails": "Details anzeigen"
     },
@@ -50,31 +50,33 @@
       "backToListings": "Zurück zur Übersicht",
       "companyDetails": "Unternehmensdetails",
       "location": "Standort",
-      "dataYear": "Datenjahr",
-      "lastOwnershipChange": "Letzter Eigentümerwechsel",
+      "dataYear": "Geschäftsjahr",
+      "corporatePurpose": "Unternehmensgegenstand",
+      "lastOwnershipChange": "Letzter Inhaberwechsel",
       "yearsAgo": "vor {years} Jahren",
       "receivables": "Forderungen",
-      "cashAssets": "Barvermögen",
+      "cashAssets": "Flüssige Mittel",
       "liabilities": "Verbindlichkeiten",
-      "retainedEarnings": "Gewinnrücklagen",
-      "viewOnGoogleMaps": "Auf Google Maps ansehen",
-      "interested": "Interesse an dieser Gelegenheit?",
+      "retainedEarnings": "Bilanzgewinn",
+      "viewOnGoogleMaps": "Auf Google Maps anzeigen",
+      "interested": "Interessiert an dieser Möglichkeit?",
       "interestedDescription": "Kontaktieren Sie uns, um mehr über diese Nachfolgemöglichkeit zu erfahren.",
       "requestInfo": "Informationen anfordern",
       "notFound": "Unternehmen nicht gefunden",
       "notFoundDescription": "Dieses Unternehmen existiert nicht.",
       "backToHome": "Zurück zur Startseite",
       "loadingDetails": "Unternehmensdetails werden geladen...",
-      "yearsSinceChange": "{years} Jahre seit Eigentümerwechsel"
+      "yearsSinceChange": "{years} Jahre seit Wechsel",
+      "unnamedCompany": "Unbenanntes Unternehmen"
     }
   },
   "shareholders": {
     "title": "Gesellschafter",
     "noData": "Keine Gesellschafterinformationen verfügbar.",
     "highOpportunity": "Hohe Nachfolgechance",
-    "highOpportunityDescriptionSingle": "Ein Gesellschafter ist über 65 Jahre alt, was auf Nachfolgeplanungsbedarf hinweist.",
-    "highOpportunityDescriptionMultiple": "{count} Gesellschafter sind über 65 Jahre alt, was auf starken Nachfolgeplanungsbedarf hinweist.",
-    "ownershipDistribution": "Eigentumsverteilung",
+    "highOpportunityDescriptionSingle": "Ein Gesellschafter ist über 65 Jahre alt, was auf potenziellen Nachfolgeplanungsbedarf hindeutet.",
+    "highOpportunityDescriptionMultiple": "{count} Gesellschafter sind über 65 Jahre alt, was auf starken Nachfolgeplanungsbedarf hindeutet.",
+    "ownershipDistribution": "Verteilung der Eigentumsanteile",
     "shareholderDetails": "Gesellschafterdetails",
     "name": "Name",
     "ownership": "Anteil",
@@ -93,8 +95,12 @@
     "noHistoricalData": "Keine historischen Daten verfügbar",
     "noHistoricalDataDescription": "Finanzielle Trends erfordern mehrjährige Daten.",
     "equity": "Eigenkapital",
-    "totalAssets": "Gesamtvermögen",
-    "netIncome": "Nettoeinkommen",
-    "amount": "Betrag (EUR)"
+    "totalAssets": "Bilanzsumme",
+    "netIncome": "Jahresüberschuss",
+    "amount": "Betrag (EUR)",
+    "balanceSheetStructure": "Bilanzstruktur",
+    "liabilities": "Verbindlichkeiten",
+    "assetBreakdown": "Aufschlüsselung der Aktiva",
+    "profitabilityMetrics": "Rentabilitätskennzahlen"
   }
 }
