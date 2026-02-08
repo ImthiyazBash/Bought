@@ -12,6 +12,7 @@ import MetricCard from '@/components/ui/MetricCard';
 import Badge from '@/components/ui/Badge';
 import FinancialCharts from '@/components/FinancialCharts';
 import ShareholderInfo from '@/components/ShareholderInfo';
+import RequestInfoModal from '@/components/RequestInfoModal';
 
 export default function CompanyPageClient({
   params,
@@ -24,6 +25,7 @@ export default function CompanyPageClient({
   const [company, setCompany] = useState<HamburgTarget | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchCompany() {
@@ -141,7 +143,10 @@ export default function CompanyPageClient({
                   <p className="text-sm text-gray-600 mb-4">
                     {t('company.detail.interestedDescription')}
                   </p>
-                  <button className="w-full bg-primary text-white font-medium py-3 rounded-lg hover:bg-primary-hover transition-colors shadow-md hover:shadow-lg">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full bg-primary text-white font-medium py-3 rounded-lg hover:bg-primary-hover transition-colors shadow-md hover:shadow-lg"
+                  >
                     {t('company.detail.requestInfo')}
                   </button>
                 </div>
@@ -277,13 +282,27 @@ export default function CompanyPageClient({
 
       {/* Sticky CTA - Mobile Only */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 shadow-2xl z-50">
-        <button className="w-full bg-primary text-white font-medium py-4 rounded-lg hover:bg-primary-hover transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="w-full bg-primary text-white font-medium py-4 rounded-lg hover:bg-primary-hover transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+        >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           {t('company.detail.requestInfo')}
         </button>
       </div>
+
+      {/* Request Info Modal */}
+      <RequestInfoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        companyId={parseInt(id)}
+        companyName={company.company_name || t('company.detail.unnamedCompany')}
+        onSubmitSuccess={() => {
+          // Success callback - can add analytics or tracking here
+        }}
+      />
     </div>
   );
 }

@@ -105,5 +105,18 @@
     "liabilities": "Verbindlichkeiten",
     "assetBreakdown": "Aufschlüsselung der Aktiva",
     "profitabilityMetrics": "Rentabilitätskennzahlen"
+  },
+  "modal": {
+    "requestInfo": {
+      "title": "Informationen anfordern",
+      "subtitle": "Interessiert an {company}? Hinterlassen Sie Ihre E-Mail und wir melden uns bei Ihnen.",
+      "emailLabel": "E-Mail-Adresse",
+      "emailPlaceholder": "ihre.email@beispiel.de",
+      "submit": "Anfrage senden",
+      "submitting": "Wird gesendet...",
+      "successTitle": "Vielen Dank!",
+      "successMessage": "Wir haben Ihre Anfrage erhalten und werden uns bald bei Ihnen melden.",
+      "stayTuned": "Bleiben Sie dran!"
+    }
   }
 }
