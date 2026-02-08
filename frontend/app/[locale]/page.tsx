@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { HamburgTarget, FilterState } from '@/lib/types';
 import { getCompanyNachfolgeScore } from '@/lib/utils';
@@ -27,6 +27,7 @@ export default function Home() {
   const t = useTranslations();
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const locale = params.locale as string;
   const [companies, setCompanies] = useState<HamburgTarget[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +35,63 @@ export default function Home() {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [hoveredCompanyId, setHoveredCompanyId] = useState<number | null>(null);
   const [mobileView, setMobileView] = useState<'list' | 'map'>('list');
+
+  // Load filters from URL on mount
+  useEffect(() => {
+    const urlFilters: FilterState = { ...initialFilters };
+
+    const query = searchParams.get('q');
+    if (query) urlFilters.searchQuery = query;
+
+    const minEmp = searchParams.get('minEmp');
+    if (minEmp) urlFilters.minEmployees = parseInt(minEmp);
+
+    const maxEmp = searchParams.get('maxEmp');
+    if (maxEmp) urlFilters.maxEmployees = parseInt(maxEmp);
+
+    const minEq = searchParams.get('minEq');
+    if (minEq) urlFilters.minEquity = parseInt(minEq);
+
+    const maxEq = searchParams.get('maxEq');
+    if (maxEq) urlFilters.maxEquity = parseInt(maxEq);
+
+    const minInc = searchParams.get('minInc');
+    if (minInc) urlFilters.minIncome = parseInt(minInc);
+
+    const maxInc = searchParams.get('maxInc');
+    if (maxInc) urlFilters.maxIncome = parseInt(maxInc);
+
+    const minScore = searchParams.get('minScore');
+    if (minScore) urlFilters.minNachfolgeScore = parseInt(minScore);
+
+    const city = searchParams.get('city');
+    if (city) urlFilters.selectedCity = city;
+
+    setFilters(urlFilters);
+  }, [searchParams]);
+
+  // Update URL when filters change
+  const updateFilters = (newFilters: FilterState) => {
+    setFilters(newFilters);
+
+    // Build query string
+    const params = new URLSearchParams();
+
+    if (newFilters.searchQuery) params.set('q', newFilters.searchQuery);
+    if (newFilters.minEmployees !== initialFilters.minEmployees) params.set('minEmp', newFilters.minEmployees.toString());
+    if (newFilters.maxEmployees !== initialFilters.maxEmployees) params.set('maxEmp', newFilters.maxEmployees.toString());
+    if (newFilters.minEquity !== initialFilters.minEquity) params.set('minEq', newFilters.minEquity.toString());
+    if (newFilters.maxEquity !== initialFilters.maxEquity) params.set('maxEq', newFilters.maxEquity.toString());
+    if (newFilters.minIncome !== initialFilters.minIncome) params.set('minInc', newFilters.minIncome.toString());
+    if (newFilters.maxIncome !== initialFilters.maxIncome) params.set('maxInc', newFilters.maxIncome.toString());
+    if (newFilters.minNachfolgeScore !== initialFilters.minNachfolgeScore) params.set('minScore', newFilters.minNachfolgeScore.toString());
+    if (newFilters.selectedCity) params.set('city', newFilters.selectedCity);
+
+    // Update URL without reloading page
+    const queryString = params.toString();
+    const newUrl = queryString ? `/${locale}?${queryString}` : `/${locale}`;
+    router.replace(newUrl, { scroll: false });
+  };
 
   // Fetch companies from Supabase
   useEffect(() => {
@@ -203,7 +261,7 @@ export default function Home() {
       {/* Filters */}
       <SearchFilters
         filters={filters}
-        onFiltersChange={setFilters}
+        onFiltersChange={updateFilters}
         totalCount={companies.length}
         filteredCount={filteredCompanies.length}
       />
@@ -258,7 +316,7 @@ export default function Home() {
                 {t('search.noResultsDescription')}
               </p>
               <button
-                onClick={() => setFilters(initialFilters)}
+                onClick={() => updateFilters(initialFilters)}
                 className="text-primary hover:underline"
               >
                 {t('search.clearAll')}

@@ -27,16 +27,16 @@
     "equity": "Equity",
     "income": "Net Income",
     "city": "City",
-    "minScore": "Minimum Nachfolge-Score",
+    "minScore": "Minimum Succession Score",
     "scoreDescription": "Higher scores indicate greater succession opportunity (10 = age 65+, 7-9 = age 55-64, 1-6 = age <55)"
   },
   "score": {
-    "label": "Nachfolge-Score",
-    "legend": "Nachfolge-Score",
+    "label": "Succession Score",
+    "legend": "Succession Score",
     "high": "Score 10 (Age 65+)",
     "medium": "Score 7-9 (Age 55-64)",
     "low": "Score 1-6 (Age <55)",
-    "indicators": "Nachfolge-Score Indicators",
+    "indicators": "Succession Score Indicators",
     "highCount": "{count} Score 10",
     "mediumCount": "{count} Score 7-9"
   },
@@ -54,6 +54,7 @@
       "companyDetails": "Company Details",
       "location": "Location",
       "dataYear": "Data Year",
+      "corporatePurpose": "Corporate Purpose",
       "lastOwnershipChange": "Last Ownership Change",
       "yearsAgo": "{years} years ago",
       "receivables": "Receivables",
@@ -68,7 +69,8 @@
       "notFoundDescription": "This company does not exist.",
       "backToHome": "Back to Home",
       "loadingDetails": "Loading company details...",
-      "yearsSinceChange": "{years} years since ownership change"
+      "yearsSinceChange": "{years} years since ownership change",
+      "unnamedCompany": "Unnamed Company"
     }
   },
   "shareholders": {

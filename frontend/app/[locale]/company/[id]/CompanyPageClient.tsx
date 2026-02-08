@@ -2,6 +2,7 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { HamburgTarget } from '@/lib/types';
 import { formatCurrency, formatNumber, getFullAddress, getCompanyNachfolgeScore, getScoreVariant } from '@/lib/utils';
@@ -19,6 +20,7 @@ export default function CompanyPageClient({
 }) {
   const { id, locale } = use(params);
   const t = useTranslations();
+  const router = useRouter();
   const [company, setCompany] = useState<HamburgTarget | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -92,15 +94,15 @@ export default function CompanyPageClient({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Link */}
           <div className="py-4">
-            <Link
-              href={`/${locale}`}
+            <button
+              onClick={() => router.back()}
               className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               {t('company.detail.backToListings')}
-            </Link>
+            </button>
           </div>
 
           {/* Company Header */}
