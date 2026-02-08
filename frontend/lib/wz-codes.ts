@@ -32,6 +32,10 @@ export const WZ_CODES: Record<string, { de: string; en: string }> = {
     de: 'Elektroinstallation',
     en: 'Electrical installation',
   },
+  '43.21.0': {
+    de: 'Elektroinstallation',
+    en: 'Electrical installation',
+  },
   '43.22': {
     de: 'Klempnerei, Gas-, Wasser-, Heizungs- sowie Lüftungs- und Klimainstallation',
     en: 'Plumbing, heat and air-conditioning installation',
@@ -94,6 +98,10 @@ export const WZ_CODES: Record<string, { de: string; en: string }> = {
     de: 'Tankstellen',
     en: 'Retail trade in third-party name of motor fuels, agency petrol stations',
   },
+  '47.99.9': {
+    de: 'Sonstiger Einzelhandel a. n. g. (nicht in Verkaufsräumen)',
+    en: 'Other retail sale not in stores n.e.c.',
+  },
 
   // Transportation and storage (Verkehr und Lagerei)
   '49.41.0': {
@@ -150,6 +158,10 @@ export const WZ_CODES: Record<string, { de: string; en: string }> = {
     de: 'Wirtschaftsprüfung und Steuerberatung; Buchführung',
     en: 'Accounting, bookkeeping and auditing activities; tax consultancy',
   },
+  '70.22.0': {
+    de: 'Unternehmensberatung',
+    en: 'Business and other management consultancy activities',
+  },
   '71.12': {
     de: 'Technische Untersuchung und Beratung',
     en: 'Engineering activities and related technical consultancy',
@@ -165,10 +177,20 @@ export const WZ_CODES: Record<string, { de: string; en: string }> = {
     en: 'Landscape service activities',
   },
 
+  // Public administration and defence (Öffentliche Verwaltung, Verteidigung)
+  '84.25.0': {
+    de: 'Feuerwehren',
+    en: 'Fire service activities',
+  },
+
   // Human health and social work activities (Gesundheits- und Sozialwesen)
   '87.30': {
     de: 'Altenheime, Alten- und Behindertenwohnheime',
     en: 'Residential care activities for older persons or persons with physical disabilities',
+  },
+  '88.10.1': {
+    de: 'Soziale Betreuung älterer Menschen und Behinderter',
+    en: 'Domestic social service activities, Provision of outpatient care services',
   },
 
   // Arts, entertainment and recreation (Kunst, Unterhaltung und Erholung)
