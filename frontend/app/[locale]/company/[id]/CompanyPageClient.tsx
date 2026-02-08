@@ -107,30 +107,44 @@ export default function CompanyPageClient({
 
           {/* Company Header */}
           <div className="pb-8">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+              <div className="flex-1">
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">
                   {company.company_name || t('company.detail.unnamedCompany')}
                 </h1>
-                <div className="flex items-center gap-2 text-gray-300">
+                <div className="flex items-center gap-2 text-gray-300 mb-4">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <span>{getFullAddress(company)}</span>
                 </div>
+                {/* Status Badges */}
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant={scoreVariant}>
+                    {t('score.label')}: {nachfolgeScore}/10
+                  </Badge>
+                  {yearsSinceChange && yearsSinceChange > 10 && (
+                    <Badge variant="neutral">
+                      {t('company.detail.yearsSinceChange').replace('{years}', yearsSinceChange.toString())}
+                    </Badge>
+                  )}
+                </div>
               </div>
 
-              {/* Status Badges */}
-              <div className="flex flex-wrap gap-2">
-                <Badge variant={scoreVariant}>
-                  {t('score.label')}: {nachfolgeScore}/10
-                </Badge>
-                {yearsSinceChange && yearsSinceChange > 10 && (
-                  <Badge variant="neutral">
-                    {t('company.detail.yearsSinceChange').replace('{years}', yearsSinceChange.toString())}
-                  </Badge>
-                )}
+              {/* CTA Button - Desktop */}
+              <div className="hidden lg:block flex-shrink-0">
+                <div className="bg-white rounded-xl p-5 shadow-xl border-2 border-primary/20 min-w-[280px]">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {t('company.detail.interested')}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {t('company.detail.interestedDescription')}
+                  </p>
+                  <button className="w-full bg-primary text-white font-medium py-3 rounded-lg hover:bg-primary-hover transition-colors shadow-md hover:shadow-lg">
+                    {t('company.detail.requestInfo')}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -138,7 +152,7 @@ export default function CompanyPageClient({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 lg:pb-8">
         {/* Key Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 -mt-12">
           <MetricCard
@@ -252,18 +266,6 @@ export default function CompanyPageClient({
               </a>
             </div>
 
-            {/* Contact CTA */}
-            <div className="bg-gradient-to-br from-primary to-primary-hover rounded-xl p-6 text-white">
-              <h3 className="text-lg font-semibold mb-2">
-                {t('company.detail.interested')}
-              </h3>
-              <p className="text-sm text-white/80 mb-4">
-                {t('company.detail.interestedDescription')}
-              </p>
-              <button className="w-full bg-white text-primary font-medium py-2.5 rounded-lg hover:bg-gray-100 transition-colors">
-                {t('company.detail.requestInfo')}
-              </button>
-            </div>
           </div>
         </div>
 
@@ -271,6 +273,16 @@ export default function CompanyPageClient({
         <div className="mt-8">
           <ShareholderInfo company={company} />
         </div>
+      </div>
+
+      {/* Sticky CTA - Mobile Only */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 shadow-2xl z-50">
+        <button className="w-full bg-primary text-white font-medium py-4 rounded-lg hover:bg-primary-hover transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          {t('company.detail.requestInfo')}
+        </button>
       </div>
     </div>
   );
