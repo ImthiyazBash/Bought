@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { HamburgTarget, FilterState } from '@/lib/types';
@@ -9,6 +9,8 @@ import { useTranslations } from '@/lib/i18n-context';
 import CompanyCard from '@/components/CompanyCard';
 import CompanyMap from '@/components/CompanyMap';
 import SearchFilters from '@/components/SearchFilters';
+
+export const dynamic = 'force-dynamic';
 
 const initialFilters: FilterState = {
   searchQuery: '',
@@ -23,7 +25,7 @@ const initialFilters: FilterState = {
   highSuccessionRiskOnly: false,
 };
 
-export default function Home() {
+function HomeContent() {
   const t = useTranslations();
   const router = useRouter();
   const params = useParams();
@@ -348,5 +350,20 @@ export default function Home() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   );
 }
