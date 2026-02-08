@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { HamburgTarget } from '@/lib/types';
 import { formatCurrency, formatNumber, getFullAddress, getCompanyNachfolgeScore, getScoreVariant } from '@/lib/utils';
+import { getWzDescription } from '@/lib/wz-codes';
 import { useTranslations } from '@/lib/i18n-context';
 import MetricCard from '@/components/ui/MetricCard';
 import Badge from '@/components/ui/Badge';
@@ -190,11 +191,18 @@ export default function CompanyPageClient({
                           </span>
                         </div>
                       )}
-                      {company.wz_description && (
-                        <p className="text-sm text-gray-700 leading-relaxed">
-                          {company.wz_description}
-                        </p>
-                      )}
+                      {(() => {
+                        const description = getWzDescription(
+                          company.wz_code,
+                          locale,
+                          company.wz_description
+                        );
+                        return description ? (
+                          <p className="text-sm text-gray-700 leading-relaxed">
+                            {description}
+                          </p>
+                        ) : null;
+                      })()}
                     </dd>
                   </div>
                 )}

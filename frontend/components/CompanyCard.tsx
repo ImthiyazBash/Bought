@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HamburgTarget } from '@/lib/types';
 import { formatCurrency, getShortAddress, getCompanyNachfolgeScore, getScoreVariant, formatNumber } from '@/lib/utils';
+import { getWzDescription } from '@/lib/wz-codes';
 import { useTranslations } from '@/lib/i18n-context';
 import Badge from './ui/Badge';
 
@@ -70,11 +71,18 @@ export default function CompanyCard({ company, isHovered, onHover }: CompanyCard
                     WZ {company.wz_code}
                   </span>
                 )}
-                {company.wz_description && (
-                  <p className="text-xs text-gray-600 line-clamp-2 flex-1">
-                    {company.wz_description}
-                  </p>
-                )}
+                {(() => {
+                  const description = getWzDescription(
+                    company.wz_code,
+                    locale,
+                    company.wz_description
+                  );
+                  return description ? (
+                    <p className="text-xs text-gray-600 line-clamp-2 flex-1">
+                      {description}
+                    </p>
+                  ) : null;
+                })()}
               </div>
             </div>
           )}
