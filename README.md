@@ -28,9 +28,9 @@ Bought helps identify and visualize SME succession opportunities by displaying c
 ### 🗺️ Interactive Map
 - **Mapbox Integration**: High-quality interactive maps
 - **Color-coded Markers**: Visual succession risk indicators
-  - 🔴 Red: Score 10 (Age 65+)
+  - 🔴 Red: Score 1-6 (Age <55) 
   - 🟡 Yellow: Score 7-9 (Age 55-64)
-  - 🟢 Green: Score 1-6 (Age <55)
+  - 🟢 Green: Score 10 (Age 65+)
 - **Hover Sync**: Hovering over company cards highlights map markers
 - **Click Navigation**: Click markers to view company details
 - **Geocoding**: Automatic address-to-coordinates conversion
