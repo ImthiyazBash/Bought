@@ -32,7 +32,7 @@ export default function RequestInfoModal({
 
     try {
       // Insert lead inquiry into Supabase
-      const { error: supabaseError } = await supabase
+      const { error: supabaseError } = await (supabase as any)
         .from('lead_inquiries')
         .insert({
           company_id: companyId,
