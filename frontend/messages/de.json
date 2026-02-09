@@ -27,6 +27,8 @@
     "equity": "Eigenkapital",
     "income": "Jahresüberschuss",
     "city": "Stadt",
+    "sector": "Branche",
+    "allSectors": "Alle Branchen",
     "minScore": "Mindest-Nachfolge-Score",
     "scoreDescription": "Höhere Werte deuten auf einen höheren Nachfolgebedarf hin (10 = Alter 65+, 7-9 = Alter 55-64, 1-6 = Alter <55)"
   },

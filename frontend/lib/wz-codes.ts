@@ -236,3 +236,78 @@ export function getWzDescription(
   // Fallback to database description
   return fallbackDescription || null;
 }
+
+/**
+ * WZ 2008 Sector Classifications (based on division/section)
+ * Maps WZ code ranges to economic sectors
+ */
+export const WZ_SECTORS: Record<string, { de: string; en: string }> = {
+  agriculture: { de: 'Land- und Forstwirtschaft', en: 'Agriculture & Forestry' },
+  mining: { de: 'Bergbau', en: 'Mining & Quarrying' },
+  manufacturing: { de: 'Verarbeitendes Gewerbe', en: 'Manufacturing' },
+  energy: { de: 'Energieversorgung', en: 'Energy Supply' },
+  water: { de: 'Wasserversorgung', en: 'Water & Waste Management' },
+  construction: { de: 'Baugewerbe', en: 'Construction' },
+  trade: { de: 'Handel', en: 'Wholesale & Retail Trade' },
+  transportation: { de: 'Verkehr und Lagerei', en: 'Transportation & Storage' },
+  hospitality: { de: 'Gastgewerbe', en: 'Accommodation & Food Services' },
+  information: { de: 'Information und Kommunikation', en: 'Information & Communication' },
+  financial: { de: 'Finanzdienstleistungen', en: 'Financial Services' },
+  realestate: { de: 'Grundstücks- und Wohnungswesen', en: 'Real Estate' },
+  professional: { de: 'Freiberufliche Dienstleistungen', en: 'Professional & Scientific Services' },
+  administrative: { de: 'Wirtschaftliche Dienstleistungen', en: 'Administrative & Support Services' },
+  public: { de: 'Öffentliche Verwaltung', en: 'Public Administration' },
+  education: { de: 'Erziehung und Unterricht', en: 'Education' },
+  health: { de: 'Gesundheits- und Sozialwesen', en: 'Health & Social Work' },
+  arts: { de: 'Kunst und Unterhaltung', en: 'Arts & Entertainment' },
+  other: { de: 'Sonstige Dienstleistungen', en: 'Other Services' },
+};
+
+/**
+ * Get sector for a given WZ code based on its division (first 2 digits)
+ */
+export function getWzSector(wzCode: string | null): string | null {
+  if (!wzCode) return null;
+
+  // Extract first 2 digits (division code)
+  const divisionMatch = wzCode.match(/^(\d{2})/);
+  if (!divisionMatch) return null;
+
+  const division = parseInt(divisionMatch[1]);
+
+  // Map division ranges to sectors (WZ 2008 structure)
+  if (division >= 1 && division <= 3) return 'agriculture';
+  if (division >= 5 && division <= 9) return 'mining';
+  if (division >= 10 && division <= 33) return 'manufacturing';
+  if (division === 35) return 'energy';
+  if (division >= 36 && division <= 39) return 'water';
+  if (division >= 41 && division <= 43) return 'construction';
+  if (division >= 45 && division <= 47) return 'trade';
+  if (division >= 49 && division <= 53) return 'transportation';
+  if (division >= 55 && division <= 56) return 'hospitality';
+  if (division >= 58 && division <= 63) return 'information';
+  if (division >= 64 && division <= 66) return 'financial';
+  if (division === 68) return 'realestate';
+  if (division >= 69 && division <= 75) return 'professional';
+  if (division >= 77 && division <= 82) return 'administrative';
+  if (division === 84) return 'public';
+  if (division === 85) return 'education';
+  if (division >= 86 && division <= 88) return 'health';
+  if (division >= 90 && division <= 93) return 'arts';
+  if (division >= 94 && division <= 99) return 'other';
+
+  return null;
+}
+
+/**
+ * Get localized sector name
+ */
+export function getWzSectorName(
+  wzCode: string | null,
+  locale: string
+): string | null {
+  const sectorKey = getWzSector(wzCode);
+  if (!sectorKey || !WZ_SECTORS[sectorKey]) return null;
+
+  return WZ_SECTORS[sectorKey][locale as 'de' | 'en'] || WZ_SECTORS[sectorKey].en;
+}

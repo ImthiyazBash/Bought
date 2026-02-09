@@ -5,6 +5,7 @@ import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { HamburgTarget, FilterState } from '@/lib/types';
 import { getCompanyNachfolgeScore } from '@/lib/utils';
+import { getWzSector } from '@/lib/wz-codes';
 import { useTranslations } from '@/lib/i18n-context';
 import CompanyCard from '@/components/CompanyCard';
 import CompanyMap from '@/components/CompanyMap';
@@ -22,6 +23,7 @@ const initialFilters: FilterState = {
   maxIncome: 10000000,
   minNachfolgeScore: 1,
   selectedCity: null,
+  selectedSector: null,
   highSuccessionRiskOnly: false,
 };
 
@@ -69,6 +71,9 @@ function HomeContent() {
     const city = searchParams.get('city');
     if (city) urlFilters.selectedCity = city;
 
+    const sector = searchParams.get('sector');
+    if (sector) urlFilters.selectedSector = sector;
+
     setFilters(urlFilters);
   }, [searchParams]);
 
@@ -88,6 +93,7 @@ function HomeContent() {
     if (newFilters.maxIncome !== initialFilters.maxIncome) params.set('maxInc', newFilters.maxIncome.toString());
     if (newFilters.minNachfolgeScore !== initialFilters.minNachfolgeScore) params.set('minScore', newFilters.minNachfolgeScore.toString());
     if (newFilters.selectedCity) params.set('city', newFilters.selectedCity);
+    if (newFilters.selectedSector) params.set('sector', newFilters.selectedSector);
 
     // Update URL without reloading page
     const queryString = params.toString();
@@ -196,6 +202,14 @@ function HomeContent() {
       // City filter
       if (filters.selectedCity && company.address_city !== filters.selectedCity) {
         return false;
+      }
+
+      // Sector filter
+      if (filters.selectedSector) {
+        const companySector = getWzSector(company.wz_code);
+        if (companySector !== filters.selectedSector) {
+          return false;
+        }
       }
 
       return true;

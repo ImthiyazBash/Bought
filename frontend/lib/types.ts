@@ -56,6 +56,7 @@ export interface FilterState {
   maxIncome: number;
   minNachfolgeScore: number; // 1-10 scale
   selectedCity: string | null; // 'Hamburg', 'Buxtehude', or null for all
+  selectedSector: string | null; // WZ sector key or null for all
   /** @deprecated Use minNachfolgeScore instead */
   highSuccessionRiskOnly: boolean;
 }

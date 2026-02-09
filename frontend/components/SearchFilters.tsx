@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useParams } from 'next/navigation';
 import { FilterState } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
+import { WZ_SECTORS } from '@/lib/wz-codes';
 import { useTranslations } from '@/lib/i18n-context';
 
 interface SearchFiltersProps {
@@ -19,7 +21,17 @@ export default function SearchFilters({
   filteredCount,
 }: SearchFiltersProps) {
   const t = useTranslations();
+  const params = useParams();
+  const locale = params.locale as string;
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Get sorted sectors for dropdown
+  const sectorOptions = useMemo(() => {
+    return Object.entries(WZ_SECTORS).map(([key, value]) => ({
+      key,
+      label: value[locale as 'de' | 'en'] || value.en,
+    })).sort((a, b) => a.label.localeCompare(b.label));
+  }, [locale]);
 
   const handleChange = (key: keyof FilterState, value: string | number | boolean | null) => {
     onFiltersChange({ ...filters, [key]: value });
@@ -36,6 +48,7 @@ export default function SearchFilters({
       maxIncome: 10000000,
       minNachfolgeScore: 1,
       selectedCity: null,
+      selectedSector: null,
       highSuccessionRiskOnly: false,
     });
   };
@@ -49,7 +62,8 @@ export default function SearchFilters({
     filters.minIncome > -1000000 ||
     filters.maxIncome < 10000000 ||
     filters.minNachfolgeScore > 1 ||
-    filters.selectedCity !== null;
+    filters.selectedCity !== null ||
+    filters.selectedSector !== null;
 
   return (
     <div className="bg-white border-b border-gray-200 sticky top-16 z-40">
@@ -114,6 +128,35 @@ export default function SearchFilters({
             </button>
           </div>
 
+          {/* Sector Dropdown */}
+          <div className="relative">
+            <select
+              value={filters.selectedSector || ''}
+              onChange={(e) => handleChange('selectedSector', e.target.value || null)}
+              className="appearance-none pl-4 pr-10 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white hover:border-gray-400 cursor-pointer"
+            >
+              <option value="">{t('filters.allSectors')}</option>
+              {sectorOptions.map(({ key, label }) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
+            <svg
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+
           {/* Filter Toggle */}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -141,6 +184,7 @@ export default function SearchFilters({
                   filters.minIncome > -1000000 || filters.maxIncome < 10000000,
                   filters.minNachfolgeScore > 1,
                   filters.selectedCity !== null,
+                  filters.selectedSector !== null,
                 ].filter(Boolean).length}
               </span>
             )}
